@@ -26,10 +26,10 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected successfully to criczone database'))
     .catch(err => console.error('MongoDB connection error:', err));
 
-// Start server only if we aren't running in a serverless environment (like Vercel)
-if (process.env.NODE_ENV !== 'production') {
+// Start server if not running in a Vercel serverless environment
+if (!process.env.VERCEL) {
     const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running on port ${PORT}`);
     });
 }
