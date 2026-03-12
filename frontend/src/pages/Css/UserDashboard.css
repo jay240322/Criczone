@@ -1,0 +1,427 @@
+/* Container */
+.dashboard-container {
+    min-height: 100vh;
+    padding: 20px;
+    background-color: var(--bg-color, #f8fafc);
+    color: var(--text-color, #0f172a);
+    transition: all 0.3s ease;
+}
+
+.dashboard-content {
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 auto;
+    background: var(--card-bg, #ffffff);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+
+/* Header & Profile */
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+    margin-bottom: 40px;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #009270, #005c46);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    box-shadow: 0 8px 16px rgba(0, 146, 112, 0.3);
+}
+
+.profile-info h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+}
+
+.name-display-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.member-since {
+    color: var(--text-muted, #64748b);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Edit Mode */
+.name-edit-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.name-edit-input {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 1.2rem;
+    outline: none;
+    font-family: inherit;
+    background: var(--input-bg, #fff);
+    color: var(--text-color, #0f172a);
+}
+
+.name-edit-input:focus {
+    border-color: #009270;
+    box-shadow: 0 0 0 3px rgba(0, 146, 112, 0.1);
+}
+
+.btn-edit {
+    background: none;
+    border: none;
+    color: #009270;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.btn-edit:hover {
+    background: rgba(0, 146, 112, 0.1);
+}
+
+.btn-save,
+.btn-cancel {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s;
+}
+
+.btn-save {
+    background: #009270;
+    color: white;
+}
+
+.btn-save:hover {
+    transform: scale(1.05);
+}
+
+.btn-cancel {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.btn-cancel:hover {
+    background: #cbd5e1;
+}
+
+/* Settings section */
+.dashboard-settings h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: var(--setting-bg, #f8fafc);
+    border-radius: 12px;
+}
+
+.setting-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
+
+.setting-info p {
+    margin-bottom: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    cursor: pointer;
+}
+
+.toggle-track {
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    background: #e0e0e0;
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.toggle-track.dark {
+    background: #4caf50;
+}
+
+.toggle-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.toggle-track.dark .toggle-thumb {
+    transform: translateX(30px);
+}
+
+.btn-logout {
+    background-color: transparent;
+    border: 2px solid #e53935;
+    color: #e53935;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 300px;
+}
+
+.btn-logout:hover {
+    background-color: #e53935;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(229, 57, 53, 0.2);
+}
+
+/* Global Dark Theme override injected when body has .dark-theme */
+body.dark-theme {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+/* Variables for Dashboard when dark theme is active */
+body.dark-theme .dashboard-container {
+    --bg-color: #0f172a;
+    --text-color: #f8fafc;
+    --card-bg: #1e293b;
+    --border-color: #334155;
+    --text-muted: #94a3b8;
+    --input-bg: #0f172a;
+    --setting-bg: #0f172a;
+}
+
+/* Favorites Section */
+.favorites-section {
+    margin-bottom: 40px;
+}
+
+.favorites-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.favorites-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border-color, #e2e8f0);
+    padding-bottom: 10px;
+}
+
+.fav-tab {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-muted, #64748b);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.fav-tab:hover {
+    background: rgba(0, 146, 112, 0.05);
+}
+
+.fav-tab.active {
+    color: #fff;
+    background: #009270;
+    box-shadow: 0 4px 10px rgba(0, 146, 112, 0.3);
+}
+
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.fav-card {
+    background: var(--setting-bg, #f8fafc);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.fav-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.fav-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.fav-card.video img {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    aspect-ratio: 16/9;
+}
+
+.fav-match-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.fav-card h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-color, #0f172a);
+}
+
+.no-favs {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted, #64748b);
+    padding: 30px;
+    font-style: italic;
+    background: var(--setting-bg, #f8fafc);
+    border-radius: 12px;
+}
+
+body.dark-theme .fav-tab {
+    color: #94a3b8;
+}
+
+body.dark-theme .fav-tab:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-theme .fav-tab.active {
+    color: #fff;
+    background: #009270;
+}
+
+body.dark-theme .fav-card,
+body.dark-theme .no-favs {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-theme .fav-card h4 {
+    color: #f8fafc;
+}
+
+/* Make some other elements dark-theme compatible roughly */
+body.dark-theme .navbar {
+    background-color: #1e293b;
+}
+
+body.dark-theme .scorecard,
+body.dark-theme .news-card,
+body.dark-theme .news-card-mini,
+body.dark-theme .team-card,
+body.dark-theme .match-card,
+body.dark-theme .player-info-card,
+body.dark-theme .rankings-table,
+body.dark-theme .scorecard-table-container,
+body.dark-theme .bottom-navbar,
+body.dark-theme .news-detailed-content {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+
+body.dark-theme .card-footer-bar,
+body.dark-theme .inning-header,
+body.dark-theme .mobile-fixed-dropdown,
+body.dark-theme .schedule-group {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme .team-shortname,
+body.dark-theme .team-score-display,
+body.dark-theme .news-headline,
+body.dark-theme .news-card-headline,
+body.dark-theme .series-name,
+body.dark-theme .match-desc,
+body.dark-theme .bottom-nav-text {
+    color: #f8fafc !important;
+}
+
+body.dark-theme .empty-card,
+body.dark-theme .filter-btn,
+body.dark-theme .topic-selector button {
+    background-color: #1e293b;
+    color: #f8fafc;
+    border-color: #334155;
+}
+
+body.dark-theme .filter-btn.active,
+body.dark-theme .topic-selector button[style*="background: rgb(0, 146, 112)"] {
+    background-color: #009270 !important;
+    color: white !important;
+}
+
+body.dark-theme .heading {
+    color: #f8fafc !important;
+}
+
+@media (max-width: 768px) {
+    .dashboard-content {
+        padding: 20px;
+    }
+
+    .profile-info h1 {
+        font-size: 1.8rem;
+    }
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+}

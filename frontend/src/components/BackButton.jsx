@@ -1,0 +1,18 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './BackButton.css';
+
+const BackButton = () => {
+    const navigate = useNavigate();
+
+    return (
+        <>
+            <div className="back-button-spacer"></div>
+            <button className="back-button" onClick={() => navigate(-1)}>
+                <span className="back-icon">&#8592;</span> Back
+            </button>
+        </>
+    );
+};
+
+export default BackButton;

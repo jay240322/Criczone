@@ -1,0 +1,47 @@
+.global-loader-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 200px;
+    /* Keep layout stable while loading */
+}
+
+.global-loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 146, 112, 0.2);
+    border-top: 4px solid #009270;
+    /* Primary green */
+    border-radius: 50%;
+    animation: global-spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+.global-loader-text {
+    color: var(--text-muted, #64748b);
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+@keyframes global-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dark Theme overrides using the provided class */
+body.dark-theme .global-loader-text {
+    color: #94a3b8 !important;
+}
+
+body.dark-theme .global-loader-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #009270;
+}

@@ -1,0 +1,4 @@
+@import './login.css';
+
+/* We can reuse all the identical CSS variables and classes from login.css to follow DRY principles */
+/* Any signup-specific overrides can go here later if needed */

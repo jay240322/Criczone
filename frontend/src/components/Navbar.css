@@ -1,0 +1,275 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1d6e43;
+    /* Dark Green */
+    padding: 1rem 2rem;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.navbar-left .navbar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.navbar-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.5rem;
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.navbar-links li a:hover {
+    opacity: 0.8;
+}
+
+.profile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-icon:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.profile-icon .icon {
+    width: 24px;
+    height: 24px;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+/* --- Scrolled Navbar Styles (Glassmorphism) --- */
+.navbar.scrolled {
+    background-color: rgba(144, 199, 144, 0.599);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    color: #333;
+}
+
+.navbar.scrolled .navbar-logo {
+    color: #1d6e43;
+}
+
+.navbar.scrolled .navbar-links li a {
+    color: rgb(54, 53, 53)
+}
+
+.navbar.scrolled .navbar-links li a:hover {
+    color: #1d6e43;
+    opacity: 1;
+}
+
+.navbar.scrolled .profile-icon {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.navbar.scrolled .profile-icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navbar.scrolled .profile-icon .icon {
+    color: #333;
+}
+
+/* --- Bottom Navbar Styles (Hidden by default on Desktop) --- */
+.bottom-navbar {
+    display: none;
+    /* Hidden on screens > 768px */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    height: 65px;
+    border-top: 1px solid #eaeaea;
+}
+
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        /* Hidden on mobile for now, can be expanded to a hamburger menu if requested */
+    }
+
+    /* Show bottom navbar on mobile */
+    .bottom-navbar {
+        display: flex;
+    }
+
+    /* Adjust main content padding to prevent overlapping with bottom navbar */
+    body {
+        padding-bottom: 70px;
+        /* equivalent to bottom-navbar height */
+    }
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #666;
+    flex: 1;
+    height: 100%;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    /* Required for positioning the dropdown relative to this item */
+    position: static;
+}
+
+.bottom-nav-item:hover,
+.bottom-nav-item.active {
+    color: #1d6e43;
+    /* Active green color */
+}
+
+.bottom-nav-icon {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+}
+
+.bottom-nav-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* --- More Dropdown Styles --- */
+.more-btn-wrapper {
+    position: relative;
+    /* Context for absolute dropdown */
+}
+
+.mobile-fixed-dropdown {
+    position: fixed;
+    bottom: 85px;
+    /* Above the navbar (65px height + 10px gap) */
+    right: 15px;
+    /* Aligned towards the right edge */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    overflow: hidden;
+    z-index: 9999;
+    /* Extremely high z-index to guarantee clickability */
+    animation: slideUp 0.3s ease;
+}
+
+.more-dropdown-item {
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    /* Ensure pointer shows */
+    display: block;
+    /* Make the whole area clickable */
+}
+
+.more-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.more-dropdown-item:hover,
+.more-dropdown-item:active {
+    background-color: #f9f9f9;
+    color: #1d6e43;
+}
+
+/* Overlay to capture clicks outside the dropdown */
+.more-dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9998;
+    /* Just below the dropdown */
+    background: transparent;
+    /* Invisible overlay */
+}
+
+/* Simple slide-up animation for dropdown */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dark Theme Scrolled Navbar */
+body.dark-theme .navbar.scrolled {
+    background-color: rgba(30, 41, 59, 0.85); /* #1e293b with opacity */
+    color: #f8fafc;
+}
+
+body.dark-theme .navbar.scrolled .navbar-logo {
+    color: #f8fafc;
+}
+
+body.dark-theme .navbar.scrolled .navbar-links li a {
+    color: #f8fafc;
+}
+
+body.dark-theme .navbar.scrolled .navbar-links li a:hover {
+    color: #4caf50;
+}
+
+body.dark-theme .navbar.scrolled .profile-icon {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .navbar.scrolled .profile-icon:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-theme .navbar.scrolled .profile-icon .icon {
+    color: #f8fafc;
+}

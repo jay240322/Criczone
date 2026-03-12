@@ -1,0 +1,201 @@
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-color, #f0f4f8);
+    padding: 20px;
+}
+
+.auth-card {
+    background: var(--card-bg, #ffffff);
+    width: 100%;
+    max-width: 440px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-header h2 {
+    color: var(--title-green, #009270);
+    font-size: 2rem;
+    margin: 0 0 8px 0;
+    font-weight: 800;
+}
+
+.auth-header p {
+    color: var(--text-muted, #64748b);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color, #334155);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #cbd5e1);
+    font-size: 1rem;
+    background: var(--input-bg, #f8fafc);
+    color: var(--text-color, #0f172a);
+    box-sizing: border-box;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #009270;
+    box-shadow: 0 0 0 3px rgba(0, 146, 112, 0.1);
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: 8px;
+}
+
+.forgot-password a {
+    font-size: 0.85rem;
+    color: #009270;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.auth-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #009270, #007a5e);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 146, 112, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+}
+
+.auth-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 146, 112, 0.4);
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 24px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color, #cbd5e1);
+}
+
+.auth-divider span {
+    padding: 0 10px;
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.google-auth-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--card-bg, #ffffff);
+    color: var(--text-color, #334155);
+    border: 1px solid var(--border-color, #cbd5e1);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: background 0.2s;
+}
+
+.google-auth-btn:hover {
+    background: var(--input-bg, #f1f5f9);
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.auth-footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-muted, #64748b);
+}
+
+.auth-footer a {
+    color: #009270;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Dark mode overrides */
+body.dark-theme .auth-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .input-group label {
+    color: #cbd5e1;
+}
+
+body.dark-theme .input-group input {
+    background: #0f172a;
+    border-color: #475569;
+    color: #f8fafc;
+}
+
+body.dark-theme .google-auth-btn {
+    background: #0f172a;
+    color: #f8fafc;
+    border-color: #475569;
+}
+
+body.dark-theme .google-auth-btn:hover {
+    background: #1e293b;
+}
+
+body.dark-theme .auth-container {
+    background: #0f172a;
+}

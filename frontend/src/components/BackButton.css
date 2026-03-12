@@ -1,0 +1,54 @@
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: white;
+    /* Changed to white */
+    border: none;
+    color: #333;
+    /* Dark text for contrast */
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Added slight shadow so it pops since it's white */
+
+    /* Fixed Positioning Below Navbar */
+    position: fixed;
+    top: 80px;
+    /* Adjust based on navbar height, approx 65-70px */
+    left: 20px;
+    z-index: 999;
+}
+
+.back-button:hover {
+    background-color: #f0f0f0;
+    transform: translateX(-4px);
+}
+
+.back-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Base adjustment for pages using the back button to sit well */
+@media (max-width: 768px) {
+    .back-button {
+        font-size: 14px;
+        padding: 6px 14px;
+        top: 20px;
+        /* Mobile navbar is at the bottom, so we can place this right at the top */
+        left: 15px;
+    }
+}
+
+/* Spacer to prevent fixed button from overlapping page titles */
+.back-button-spacer {
+    display: block;
+    width: 100%;
+    height: 50px;
+    /* Offset roughly equal to button height + margin */
+}

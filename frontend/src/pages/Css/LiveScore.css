@@ -1,0 +1,244 @@
+.live-score-page {
+    padding: 2rem 0;
+    /* Remove horizontal padding to allow full bleed scroll or specific container */
+    max-width: 100%;
+    /* Allow full width */
+    margin: 0 auto;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Ensure wrapper from home.css works here */
+.live-score-page .livescore-wrapper {
+    padding: 20px 5%;
+    /* Add back padding here */
+    scrollbar-width: none;
+}
+
+/* Vertical List Layout */
+.matches-vertical-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px 5%;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.matches-vertical-list .scorecard.vertical-card {
+    min-width: unset !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    flex-shrink: 0;
+}
+
+.live-score-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.live-score-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #0f172a;
+}
+
+.live-score-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+}
+
+.search-container {
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    margin-bottom: 4rem;
+}
+
+.live-search-input {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #1e293b;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.live-search-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Horizontal Scroll Container (Carousel) */
+.matches-carousel {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 1rem 0 3rem 0;
+    /* Padding for shadow/hover space */
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.matches-carousel::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+/* Match Grid for Search Results */
+.matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    /* Auto-fit ensures wrapping */
+    gap: 1.5rem;
+    padding: 20px 5%;
+    /* Restore padding for grid view */
+    justify-items: center;
+    /* Center cards in their cells */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.match-card-item {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    /* Carousel sizing */
+    min-width: 350px;
+    max-width: 350px;
+    flex-shrink: 0;
+
+    cursor: pointer;
+    position: relative;
+}
+
+.matches-grid .match-card-item {
+    min-width: unset;
+    max-width: 100%;
+}
+
+.match-card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.match-header-bg {
+    background: #f8fafc;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.match-status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-live {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.status-result {
+    background-color: #e0f2fe;
+    color: #0284c7;
+}
+
+.match-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.team-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.team-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.team-flag-large {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: contain;
+    background-color: white;
+    border: 2px solid #f1f5f9;
+}
+
+.team-name-large {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #0f172a;
+}
+
+.team-score-large {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #334155;
+}
+
+.match-footer {
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-top: 1px solid #f1f5f9;
+    font-size: 0.85rem;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cta-button {
+    color: #2563eb;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.no-results {
+    width: 100%;
+    text-align: center;
+    padding: 4rem;
+    color: #64748b;
+}
+
+.empty-state p {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    font-weight: 600;
+}
