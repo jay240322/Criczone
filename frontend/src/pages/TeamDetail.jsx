@@ -6,7 +6,7 @@ import BackButton from '../components/BackButton';
 import Loader from '../components/Loader';
 import './Css/teams.css'; // Reusing teams css for base styles, might need specific ones
 
-const TeamDetail = () => {
+export default function TeamDetail() {
     const { id } = useParams();
     const location = useLocation();
     const [activeTab, setActiveTab] = useState('schedule');
@@ -227,5 +227,3 @@ const TeamDetail = () => {
         </div>
     );
 };
-
-export default TeamDetail;

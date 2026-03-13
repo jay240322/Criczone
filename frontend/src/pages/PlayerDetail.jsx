@@ -6,7 +6,7 @@ import Loader from '../components/Loader';
 import FavoriteButton from '../components/FavoriteButton';
 import './Css/teams.css';
 
-const PlayerDetail = () => {
+export default function PlayerDetail() {
     const { id } = useParams();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -134,5 +134,3 @@ const PlayerDetail = () => {
         </div>
     );
 };
-
-export default PlayerDetail;

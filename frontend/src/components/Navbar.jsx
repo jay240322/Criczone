@@ -5,7 +5,7 @@ import { getUserById } from '../api/cricapi';
 import { onAuthStateChanged } from 'firebase/auth';
 import './Navbar.css';
 
-const Navbar = () => {
+export default function Navbar() {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [photoURL, setPhotoURL] = useState('');
@@ -121,5 +121,3 @@ const Navbar = () => {
     </>
   );
 };
-
-export default Navbar;

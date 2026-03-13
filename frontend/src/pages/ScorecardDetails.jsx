@@ -7,7 +7,7 @@ import FavoriteButton from '../components/FavoriteButton';
 import './Css/ScorecardDetails.css';
 import './Css/home.css';
 
-const ScorecardDetails = () => {
+export default function ScorecardDetails() {
     const { matchId } = useParams();
     const navigate = useNavigate();
 
@@ -799,5 +799,3 @@ const DetailedInning = ({ inning, index }) => {
         </div>
     );
 };
-
-export default ScorecardDetails;

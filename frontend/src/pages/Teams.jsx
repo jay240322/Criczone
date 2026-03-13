@@ -78,7 +78,7 @@ const getShortName = (teamName) => {
     return words.map(w => w[0]).join('').toUpperCase().slice(0, 3);
 };
 
-const Teams = () => {
+export default function Teams() {
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -350,5 +350,3 @@ const Teams = () => {
         </div>
     );
 };
-
-export default Teams;

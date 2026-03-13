@@ -6,7 +6,7 @@ import BackButton from '../components/BackButton';
 import Loader from '../components/Loader';
 import FavoriteButton from '../components/FavoriteButton';
 
-const Videos = () => {
+export default function Videos() {
     const [activeFilter, setActiveFilter] = useState('live');
     const [videos, setVideos] = useState([]);
     const [selectedVideo, setSelectedVideo] = useState(null);
@@ -272,5 +272,3 @@ const Videos = () => {
         </div >
     );
 };
-
-export default Videos;

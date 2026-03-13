@@ -5,7 +5,7 @@ import { getAllUsers, updateUser, deleteUser, getFavorites, deleteFavoriteAdmin,
 import './Css/AdminPanel.css';
 import './Css/LiveScore.css'; // Inheriting card styles
 
-const AdminPanel = () => {
+export default function AdminPanel() {
     const navigate = useNavigate();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [passwordInput, setPasswordInput] = useState('');
@@ -683,5 +683,3 @@ const AdminPanel = () => {
         </div>
     );
 };
-
-export default AdminPanel;

@@ -5,7 +5,7 @@ import BackButton from '../components/BackButton';
 import Loader from '../components/Loader';
 import './Css/Rankings.css';
 
-const Rankings = () => {
+export default function Rankings() {
     const [category, setCategory] = useState('batsmen'); // batsmen, bowlers, allrounders
     const [format, setFormat] = useState('test'); // test, odi, t20
     const [data, setData] = useState(null);
@@ -107,5 +107,3 @@ const Rankings = () => {
         </div>
     );
 };
-
-export default Rankings;

@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import cricapi from '../api/cricapi';
 import './login.css';
 
-const Login = () => {
+export default function login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -113,5 +113,3 @@ const Login = () => {
         </div>
     );
 };
-
-export default Login;

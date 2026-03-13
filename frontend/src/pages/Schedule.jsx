@@ -4,7 +4,7 @@ import BackButton from '../components/BackButton';
 import Loader from '../components/Loader';
 import './Css/schedule.css';
 
-const Schedule = () => {
+export default function Schedule() {
     const [scheduleData, setScheduleData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -112,5 +112,3 @@ const Schedule = () => {
         </div>
     );
 };
-
-export default Schedule;

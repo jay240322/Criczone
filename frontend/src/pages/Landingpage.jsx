@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Css/landingpage.css';
-import logo from '../assets/CricZone.png'; 
+import logo from '../assets/CricZone.png';
 
-const LandingPage = () => {
+export default function LandingPage() {
     const navigate = useNavigate();
 
     return (
@@ -19,7 +19,7 @@ const LandingPage = () => {
                     <span className="slide-up" style={{
                         fontSize: "5rem",
                         color: "var(--title-green)",
-                    }}><img src={logo} alt="Criczone" height="50%" width="50%"/></span>
+                    }}><img src={logo} alt="Criczone" height="50%" width="50%" /></span>
                 </h1>
                 <p className="subtitle fade-in">
                     Live Scores. Player Stats. The Heart of Cricket.
@@ -61,5 +61,3 @@ const LandingPage = () => {
         </div>
     );
 };
-
-export default LandingPage;

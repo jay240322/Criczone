@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from '
 import cricapi from '../api/cricapi';
 import './singup.css';
 
-const Signup = () => {
+export default function Signup() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -129,5 +129,3 @@ const Signup = () => {
         </div>
     );
 };
-
-export default Signup;

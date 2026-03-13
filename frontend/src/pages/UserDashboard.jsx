@@ -6,7 +6,7 @@ import { signOut } from 'firebase/auth';
 import { getFavorites, getImageUrl, getUserById, updateUser } from '../api/cricapi';
 import './Css/UserDashboard.css';
 
-const UserDashboard = () => {
+export default function UserDashboard() {
     const [userName, setUserName] = useState('Cricket Fan');
     const [photoURL, setPhotoURL] = useState('');
     const [isEditing, setIsEditing] = useState(false);
@@ -201,5 +201,3 @@ const UserDashboard = () => {
         </div>
     );
 };
-
-export default UserDashboard;

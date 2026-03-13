@@ -3,7 +3,7 @@ import { auth } from '../firebase';
 import { getFavorites, toggleFavorite } from '../api/cricapi';
 import './FavoriteButton.css';
 
-const FavoriteButton = ({ type, itemId, title, imageUrl, extraData }) => {
+export default function FavoriteButton({ type, itemId, title, imageUrl, extraData }) {
     const [isFav, setIsFav] = useState(false);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
@@ -65,4 +65,3 @@ const FavoriteButton = ({ type, itemId, title, imageUrl, extraData }) => {
     );
 };
 
-export default FavoriteButton;

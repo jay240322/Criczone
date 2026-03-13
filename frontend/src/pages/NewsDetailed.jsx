@@ -6,7 +6,7 @@ import BackButton from '../components/BackButton';
 import Loader from '../components/Loader';
 import './Css/NewsDetailed.css';
 
-const NewsDetailed = () => {
+export default function NewsDetailed() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [newsData, setNewsData] = useState(null);
@@ -99,5 +99,3 @@ const NewsDetailed = () => {
         </div>
     );
 };
-
-export default NewsDetailed;

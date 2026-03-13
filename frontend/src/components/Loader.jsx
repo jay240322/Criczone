@@ -1,7 +1,7 @@
 import React from 'react';
 import './Loader.css';
 
-const Loader = ({ message = "Loading..." }) => {
+export default function Loader({ message = "Loading..." }) {
     return (
         <div className="global-loader-container">
             <div className="global-loader-spinner"></div>
@@ -10,4 +10,3 @@ const Loader = ({ message = "Loading..." }) => {
     );
 };
 
-export default Loader;
