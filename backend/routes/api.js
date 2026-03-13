@@ -194,7 +194,8 @@ router.get('/topic-news/sync', async (req, res) => {
         if (!topicId) return res.status(400).json({ message: "topicId is required" });
 
         console.log(`[Sync] Fetching news for topic ID: ${topicId}`);
-        const url = `https://${process.env.RAPIDAPI_HOST}/news/v1/topics/${topicId}`;
+        // Changed from /v1/topics/ to /v1/cat/ since topics are historical series
+        const url = `https://${process.env.RAPIDAPI_HOST}/news/v1/cat/${topicId}`;
         const response = await fetch(url, {
             headers: {
                 'x-rapidapi-key': getApiKey(req),
@@ -205,13 +206,28 @@ router.get('/topic-news/sync', async (req, res) => {
         if (!response.ok) {
             console.error(`[Sync] External API failed for topic news: ${response.status}. Returning local cache.`);
             // Fallback to local
-            const cached = await TopicNews.find({ topicId }).sort({ addedAt: -1 }).limit(20);
-            return res.json({ data: { storyList: cached.map(s => s.story) }, source: 'local-fallback' });
+            const cached = await TopicNews.find({ topicId }).sort({ createdAt: -1 }).limit(20);
+            return res.json({ data: { storyList: cached.map(s => ({ story: s })) }, source: 'local-fallback' });
         }
 
         const data = await response.json();
 
-        // Cache to MongoDB (TopicNews collection if needed but for now just pass through to match frontend expectations)
+        // Cache new stories to DB
+        if (data && data.storyList) {
+            const stories = data.storyList.filter(item => item.story).map(item => ({
+                ...item.story,
+                topicId: topicId,
+                headline: item.story.hline || item.story.headline,
+                imageId: item.story.imageId || (item.story.coverImage ? item.story.coverImage.id : null),
+                id: item.story.id
+            }));
+
+            for (const story of stories) {
+                await TopicNews.findOneAndUpdate({ id: story.id, topicId: topicId }, story, { upsert: true });
+            }
+            console.log(`[Sync] Cached ${stories.length} topic news items for topic ${topicId}`);
+        }
+
         res.json({ data, source: 'backend-proxy' });
     } catch (err) {
         console.error("[Sync] Error fetching topic news:", err.message);

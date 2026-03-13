@@ -10,32 +10,56 @@ export default function Topics() {
     const [newsList, setNewsList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedTopic, setSelectedTopic] = useState('349'); // Default to 349 (Recent/India)
+    const [selectedTopic, setSelectedTopic] = useState('recent'); // Default to recent general news
 
     const topics = [
-        { id: '349', name: 'Recent' },
+        { id: 'recent', name: 'Recent' },
         { id: '1', name: 'International' },
         { id: '20', name: 'T20 Leagues' },
-        { id: '13', name: 'Features' }
+        { id: '13', name: 'Country League' }
     ];
 
     useEffect(() => {
         const fetchTopics = async () => {
             try {
                 setLoading(true);
-                const response = await getNewsByTopic(selectedTopic);
-                console.log("Topics Data:", response);
-
-                const stories = response.data.storyList || [];
-                // Filter valid stories
-                const validStories = stories.filter(item => item.story);
-                const normalized = validStories.map(item => ({
+                // The RapidAPI specific topic/category endpoints are historically frozen (e.g. 2008, 2020).
+                // To get "fresh" news in these categories, we fetch the live global news stream
+                // and accurately filter them locally by context and keywords.
+                const response = await getHybridNews();
+                const stories = response.data?.storyList || [];
+                
+                // Extract valid stories
+                const validStories = stories.filter(item => item.story).map(item => ({
                     ...item.story,
                     headline: item.story.hline || item.story.headline,
                     id: item.story.id
-                })).slice(0, 25); // Limit to latest 25 items
+                }));
 
-                setNewsList(normalized);
+                let filteredStories = validStories;
+
+                if (selectedTopic === '1') {
+                    // International: Broad filter avoiding specific T20 leagues
+                    filteredStories = validStories.filter(s => {
+                        const text = `${s.context || ''} ${s.headline || ''} ${s.intro || ''}`.toLowerCase();
+                        const isLeague = /(ipl|psl|bbl|hundred|league|women's premier|wpl|cpl|super kings|capitals|indians|riders|sunrisers|titans)/i.test(text);
+                        return !isLeague || /(icc|world cup|test|odi|t20i|tour)/i.test(text);
+                    });
+                } else if (selectedTopic === '20') {
+                    // T20 Leagues: Specifically look for franchise/league keywords
+                    filteredStories = validStories.filter(s => {
+                        const text = `${s.context || ''} ${s.headline || ''} ${s.intro || ''}`.toLowerCase();
+                        return /(ipl|psl|bbl|hundred|league|wpl|cpl|super kings|capitals|indians|riders|sunrisers|titans|franchise|auction)/i.test(text);
+                    });
+                } else if (selectedTopic === '13') {
+                    // Features / Country League
+                    filteredStories = validStories.filter(s => {
+                        const text = `${s.context || ''} ${s.headline || ''} ${s.intro || ''}`.toLowerCase();
+                        return s.storyType === 'Features' || /(feature|exclusive|interview|domestic|county|shield)/i.test(text);
+                    });
+                }
+
+                setNewsList(filteredStories.slice(0, 25));
                 setError(null);
             } catch (err) {
                 console.error("Error fetching topics:", err);
@@ -54,7 +78,7 @@ export default function Topics() {
     return (
         <div className="news-page-container">
             <BackButton />
-            <h1 className="news-page-title">Curated Topics</h1>
+            <h1 className="news-page-title">Topics</h1>
 
             <div className="topic-selector" style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {topics.map(topic => (

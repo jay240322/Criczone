@@ -120,6 +120,11 @@ export async function getLocalTopicNews(topicId) {
 
 
 // Match center / scorecards
+export async function getLiveMatches() {
+    const { data, rawResponse } = await safeGet('matches/v1/live');
+    return { data, rawResponse };
+}
+
 export async function getMatchCenter(matchId) {
     if (!matchId) throw new Error('matchId required');
     const { data, rawResponse } = await safeGet(`mcenter/v1/${matchId}`);
