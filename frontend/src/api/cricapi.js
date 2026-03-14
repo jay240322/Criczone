@@ -272,26 +272,7 @@ export async function getPlayerStats(playerId) {
     }
 }
 
-async function savePlayerToLocal(id, data) {
-    try {
-        await fetch(`${LOCAL_BASE}/players`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, ...data })
-        });
-    } catch (e) {
-        console.error("Save player error", e);
-    }
-}
 
-async function getLocalPlayer(id) {
-    try {
-        const resp = await fetch(`${LOCAL_BASE}/players/${id}`);
-        if (resp.ok) return await resp.json();
-    } catch (e) {
-        return null;
-    }
-}
 
 // Local Backend Config
 const LOCAL_BASE = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api';
@@ -513,7 +494,7 @@ export async function searchAdminMatches(query) {
     return await localReq(`scores/search?query=${encodeURIComponent(query)}`);
 }
 
-export default {
+const cricapi = {
     getMatchCenter,
     getScard,
     getTeamForMatch,
@@ -523,7 +504,6 @@ export default {
     // New exports
     getHybridNews,
     getHybridMatches,
-    getHybridNewsDetail,
     getHybridNewsDetail,
     searchScores,
     getAllLocalMatches,
@@ -596,3 +576,5 @@ export default {
     toggleFavorite,
     getFavorites
 };
+
+export default cricapi;

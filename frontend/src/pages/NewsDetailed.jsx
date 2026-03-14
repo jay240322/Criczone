@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getHybridNewsDetail, getImageUrl } from '../api/cricapi';
 // import { getNewsImage } from '../utils/images';
 import BackButton from '../components/BackButton';

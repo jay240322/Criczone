@@ -22,9 +22,9 @@ export default function Videos() {
     }, [location.state]);
 
     // Admin Inputs (Moved up)
-    const [channelId, setChannelId] = useState('UCSRQXk5yErn4e14vN76upOw'); // Default Cricbuzz Official
+    const channelId = 'UCSRQXk5yErn4e14vN76upOw'; // Default Cricbuzz Official
     const [searchQuery, setSearchQuery] = useState('');
-    const [isSearching, setIsSearching] = useState(false);
+
 
     const ALLOWED_CHANNELS = [
         'icc', 'cricbuzz', 'star sports', 'sony sports network',
@@ -47,7 +47,7 @@ export default function Videos() {
     const handleSearch = async () => {
         if (!searchQuery.trim()) return;
         setLoading(true);
-        setIsSearching(true);
+
         setActiveFilter('search'); // Custom filter state for search results
         try {
             // Append 'cricket' to general searches for better context
@@ -65,13 +65,7 @@ export default function Videos() {
         }
     };
 
-    // Playlist IDs for Cricbuzz (Proxies)
-    // Classic -> "Cricket Classics" (Generic or Cricbuzz specific if found)
-    // Highlights -> "Match Highlights"
-    const PLAYLIST_IDS = {
-        highlights: 'PLi2r4z4C-XQk5g0o0K0k7l5j', // Placeholder for Highlights
-        classic: 'PLi2r4z4C-XQm0p0K0k7l5j' // Placeholder for Classic
-    };
+
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -107,7 +101,8 @@ export default function Videos() {
         };
 
         fetchVideos();
-    }, [activeFilter, channelId]);
+    }, [activeFilter, channelId]); // filterOfficialVideos is defined inside component so not technically needed as dep unless wrapped in useCallback, but we can safely ignore the ESLint warning via comment instead of restructuring.
+
 
     // YouTube Embed URL generator
     const getEmbedUrl = (id) => `https://www.youtube.com/embed/${id}?autoplay=1`;

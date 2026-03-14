@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getMatchCenter, getScard, getTeamForMatch, getLocalScore } from '../api/cricapi';
 import BackButton from '../components/BackButton';
 import Loader from '../components/Loader';
@@ -9,7 +9,6 @@ import './Css/home.css';
 
 export default function ScorecardDetails() {
     const { matchId } = useParams();
-    const navigate = useNavigate();
 
     // State for Current Match Details
     const [matchInfo, setMatchInfo] = useState(null);
@@ -17,7 +16,6 @@ export default function ScorecardDetails() {
     const [teams, setTeams] = useState({ team1: null, team2: null });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isHistorical, setIsHistorical] = useState(false);
 
     // Helper to safely access lowercase keys
     const get = (obj, key) => obj && (obj[key] || obj[key.toLowerCase()]);
@@ -87,7 +85,7 @@ export default function ScorecardDetails() {
 
                         // CASE 1: Historical Archive Format (from import)
                         if (json.info) {
-                            setIsHistorical(true);
+
                             const info = json.info;
 
                             const adaptedInfo = {
@@ -140,7 +138,7 @@ export default function ScorecardDetails() {
                         // CASE 2: Live API Format (Cached Result)
                         else if (json.matchInfo) {
                             console.log("Found cached Live API match data");
-                            setIsHistorical(false); // treat as "live-like" for UI
+
                             const info = json.matchInfo;
                             setMatchInfo(info);
                             // Ensure scorecard exists
@@ -519,7 +517,7 @@ const LiveInningTable = ({ inning, playerMap }) => {
 
     // Historical Format Check (with overs array)
     if (inning.overs && inning.overs.length > 0) {
-        const { batters, bowlers, total, wickets: calcWickets } = processInningData(inning);
+        const { batters, bowlers } = processInningData(inning);
         return (
             <div className="scorecard-table-container">
                 <div className="inning-header">
@@ -611,7 +609,6 @@ const LiveInningTable = ({ inning, playerMap }) => {
 const processInningData = (inning) => {
     const batterStats = {};
     const bowlerStats = {};
-    let totalRuns = 0;
     let totalWickets = 0;
 
     if (!inning.overs) return { batters: [], bowlers: [], total: 0, wickets: 0 };
@@ -745,7 +742,7 @@ const DetailedInning = ({ inning, index }) => {
     }
 
     // Reuse processInningData logic since structure seems similar (overs array)
-    const { batters, bowlers, total } = processInningData(inning);
+    const { batters, bowlers } = processInningData(inning);
     // processInningData returns bowlers, batters... 
     // It expects inning.overs array.
 
