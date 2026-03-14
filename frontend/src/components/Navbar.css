@@ -134,12 +134,6 @@
     .bottom-navbar {
         display: flex;
     }
-
-    /* Adjust main content padding to prevent overlapping with bottom navbar */
-    body {
-        padding-bottom: 70px;
-        /* equivalent to bottom-navbar height */
-    }
 }
 
 .bottom-nav-item {
