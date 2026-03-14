@@ -101,7 +101,7 @@ export default function Videos() {
         };
 
         fetchVideos();
-    }, [activeFilter, channelId]); // filterOfficialVideos is defined inside component so not technically needed as dep unless wrapped in useCallback, but we can safely ignore the ESLint warning via comment instead of restructuring.
+    }, [activeFilter, channelId, filterOfficialVideos]); // Added filterOfficialVideos to fix ESLint warning
 
 
     // YouTube Embed URL generator

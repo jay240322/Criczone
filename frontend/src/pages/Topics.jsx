@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getNewsByTopic, getHybridNews, getLocalTopicNews } from "../api/cricapi";
+import { getHybridNews } from "../api/cricapi";
 import { getNewsImage } from "../utils/images";
 import BackButton from '../components/BackButton';
 import Loader from '../components/Loader';
