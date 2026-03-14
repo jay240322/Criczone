@@ -121,6 +121,10 @@
 }
 
 @media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 1rem;
+    }
+
     .navbar-links {
         display: none;
         /* Hidden on mobile for now, can be expanded to a hamburger menu if requested */

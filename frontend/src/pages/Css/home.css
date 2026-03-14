@@ -268,8 +268,15 @@
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
+    .heading {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
     .news-wrapper {
         padding: 0 16px 30px 16px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .news-card.vertical-news {
