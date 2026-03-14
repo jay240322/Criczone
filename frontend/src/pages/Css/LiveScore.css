@@ -242,3 +242,9 @@
     margin-top: 1rem;
     font-weight: 600;
 }
+
+@media (max-width: 400px) {
+    .match-card-item {
+        min-width: 280px;
+    }
+}

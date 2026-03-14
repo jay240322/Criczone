@@ -295,3 +295,14 @@
         padding: 16px;
     }
 }
+
+@media (max-width: 400px) {
+    .scorecard.vertical-card {
+        min-width: 280px;
+    }
+
+    .empty-card {
+        min-width: 260px;
+        padding: 20px;
+    }
+}
