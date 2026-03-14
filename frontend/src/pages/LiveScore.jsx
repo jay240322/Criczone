@@ -119,7 +119,8 @@ export default function LiveScore() {
         const timer = setTimeout(async () => {
             setLoading(true);
             try {
-                const res = await fetch(`http://localhost:5000/api/scores/search?query=${encodeURIComponent(searchTerm)}`);
+                const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api';
+                const res = await fetch(`${baseUrl}/scores/search?query=${encodeURIComponent(searchTerm)}`);
                 const data = await res.json();
                 if (Array.isArray(data)) {
                     setMatches(data);

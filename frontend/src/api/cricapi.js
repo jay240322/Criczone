@@ -294,7 +294,7 @@ async function getLocalPlayer(id) {
 }
 
 // Local Backend Config
-const LOCAL_BASE = 'http://localhost:5000/api';
+const LOCAL_BASE = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api';
 
 // Helper for Local API calls
 async function localReq(endpoint, method = 'GET', body = null) {
