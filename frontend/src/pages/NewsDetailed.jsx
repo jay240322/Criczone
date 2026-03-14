@@ -8,7 +8,7 @@ import './Css/NewsDetailed.css';
 
 export default function NewsDetailed() {
     const { id } = useParams();
-    const navigate = useNavigate();
+
     const [newsData, setNewsData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
