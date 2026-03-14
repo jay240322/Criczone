@@ -6,6 +6,24 @@ import BackButton from '../components/BackButton';
 import Loader from '../components/Loader';
 import FavoriteButton from '../components/FavoriteButton';
 
+const ALLOWED_CHANNELS = [
+    'icc', 'cricbuzz', 'star sports', 'sony sports network',
+    'jiocinema', 'bcci', 'cricket.com.au', 'england & wales cricket board',
+    'pakistan cricket', 'sri lanka cricket', 'new zealand cricket',
+    'windies cricket', 'bangladesh cricket: the tigers',
+    'supersport', 'sky sports cricket', 'willow', 'fox cricket', 'tata ipl', 'ipl'
+];
+
+const filterOfficialVideos = (videosRaw) => {
+    if (!videosRaw || !Array.isArray(videosRaw)) return [];
+    const filtered = videosRaw.filter((video) => {
+        if (!video.channelTitle || video.channelTitle === 'Unknown') return true; // Keep if no channelTitle or if scraped fallback
+        const channelLower = video.channelTitle.toLowerCase();
+        return ALLOWED_CHANNELS.some((allowed) => channelLower.includes(allowed));
+    });
+    return filtered.slice(0, 9);
+};
+
 export default function Videos() {
     const [activeFilter, setActiveFilter] = useState('live');
     const [videos, setVideos] = useState([]);
@@ -26,23 +44,7 @@ export default function Videos() {
     const [searchQuery, setSearchQuery] = useState('');
 
 
-    const ALLOWED_CHANNELS = [
-        'icc', 'cricbuzz', 'star sports', 'sony sports network',
-        'jiocinema', 'bcci', 'cricket.com.au', 'england & wales cricket board',
-        'pakistan cricket', 'sri lanka cricket', 'new zealand cricket',
-        'windies cricket', 'bangladesh cricket: the tigers',
-        'supersport', 'sky sports cricket', 'willow', 'fox cricket', 'tata ipl', 'ipl'
-    ];
 
-    const filterOfficialVideos = (videosRaw) => {
-        if (!videosRaw || !Array.isArray(videosRaw)) return [];
-        const filtered = videosRaw.filter(video => {
-            if (!video.channelTitle || video.channelTitle === 'Unknown') return true; // Keep if no channelTitle or if scraped fallback
-            const channelLower = video.channelTitle.toLowerCase();
-            return ALLOWED_CHANNELS.some(allowed => channelLower.includes(allowed));
-        });
-        return filtered.slice(0, 9);
-    };
 
     const handleSearch = async () => {
         if (!searchQuery.trim()) return;
@@ -101,7 +103,7 @@ export default function Videos() {
         };
 
         fetchVideos();
-    }, [activeFilter, channelId, filterOfficialVideos]); // Added filterOfficialVideos to fix ESLint warning
+    }, [activeFilter, channelId]); // Removed filterOfficialVideos because it's now outside the component
 
 
     // YouTube Embed URL generator
