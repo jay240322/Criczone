@@ -2,6 +2,8 @@
 
 CricZone is a comprehensive, full-stack live-scoring cricket web application. Built with the MERN stack, it provides real-time match updates, comprehensive stats, and a variety of features tailored for different types of users, from casual fans to platform administrators.
 
+[View on LinkedIn](https://www.linkedin.com/posts/jay-patel-28391a308_mernstack-webdevelopment-cricket-ugcPost-7439936013319413760-hTlC/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE5yQgMBqLdT4xAj26878-FdB9bCSwgw5bU)
+
 ## 🚀 Features
 
 ### General Platform Features
