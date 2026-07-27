@@ -7,7 +7,10 @@
         "install-all": "npm install && npm install --prefix backend && npm install --prefix frontend"
     },
     "dependencies": {
-        "concurrently": "^8.2.0"
+        "axios": "^1.18.1",
+        "cheerio": "^1.2.0",
+        "concurrently": "^8.2.0",
+        "playwright": "^1.62.0"
     },
     "author": "",
     "license": "ISC"
