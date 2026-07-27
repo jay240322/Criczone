@@ -1,0 +1,389 @@
+{
+  "timestamp": 1785132142014,
+  "data": {
+    "batsmen": {
+      "test": [
+        {
+          "rank": 1,
+          "id": "62023",
+          "name": "Travis HEAD",
+          "country": "Australia",
+          "rating": 853,
+          "faceImageId": "62023"
+        },
+        {
+          "rank": 2,
+          "id": "66374",
+          "name": "Harry BROOK",
+          "country": "England",
+          "rating": 852,
+          "faceImageId": "66374"
+        },
+        {
+          "rank": 3,
+          "id": "10129",
+          "name": "Joe ROOT",
+          "country": "England",
+          "rating": 840,
+          "faceImageId": "10129"
+        },
+        {
+          "rank": 4,
+          "id": "4308",
+          "name": "Steve SMITH",
+          "country": "Australia",
+          "rating": 831,
+          "faceImageId": "4308"
+        },
+        {
+          "rank": 5,
+          "id": "12492",
+          "name": "Temba BAVUMA",
+          "country": "South Africa",
+          "rating": 775,
+          "faceImageId": "12492"
+        }
+      ],
+      "odi": [
+        {
+          "rank": 1,
+          "id": "e1apom",
+          "name": "Daryl MITCHELL",
+          "country": "New Zealand",
+          "rating": 802,
+          "faceImageId": "e1apom"
+        },
+        {
+          "rank": 2,
+          "id": "3ujcaq",
+          "name": "Shubman GILL",
+          "country": "India",
+          "rating": 801,
+          "faceImageId": "3ujcaq"
+        },
+        {
+          "rank": 3,
+          "id": "jivk5o",
+          "name": "Virat KOHLI",
+          "country": "India",
+          "rating": 767,
+          "faceImageId": "jivk5o"
+        },
+        {
+          "rank": 4,
+          "id": "y4q2fm",
+          "name": "Rohit SHARMA",
+          "country": "India",
+          "rating": 758,
+          "faceImageId": "y4q2fm"
+        },
+        {
+          "rank": 5,
+          "id": "xjqh3d",
+          "name": "Ibrahim ZADRAN",
+          "country": "Unknown",
+          "rating": 712,
+          "faceImageId": "xjqh3d"
+        }
+      ],
+      "t20": [
+        {
+          "rank": 1,
+          "id": "324qhuo",
+          "name": "Ishan KISHAN",
+          "country": "India",
+          "rating": 892,
+          "faceImageId": "324qhuo"
+        },
+        {
+          "rank": 2,
+          "id": "2wuc1a",
+          "name": "Abhishek SHARMA",
+          "country": "India",
+          "rating": 858,
+          "faceImageId": "2wuc1a"
+        },
+        {
+          "rank": 3,
+          "id": "b6xsec",
+          "name": "Sahibzada FARHAN",
+          "country": "Pakistan",
+          "rating": 848,
+          "faceImageId": "b6xsec"
+        },
+        {
+          "rank": 4,
+          "id": "grstwa",
+          "name": "Phil SALT",
+          "country": "England",
+          "rating": 799,
+          "faceImageId": "grstwa"
+        },
+        {
+          "rank": 5,
+          "id": "gv60dd",
+          "name": "Pathum NISSANKA",
+          "country": "Sri Lanka",
+          "rating": 751,
+          "faceImageId": "gv60dd"
+        }
+      ]
+    },
+    "bowlers": {
+      "test": [
+        {
+          "rank": 1,
+          "id": "63755",
+          "name": "Jasprit BUMRAH",
+          "country": "India",
+          "rating": 870,
+          "faceImageId": "63755"
+        },
+        {
+          "rank": 2,
+          "id": "60544",
+          "name": "Matt HENRY",
+          "country": "New Zealand",
+          "rating": 861,
+          "faceImageId": "60544"
+        },
+        {
+          "rank": 3,
+          "id": "10053",
+          "name": "Mitchell STARC",
+          "country": "Australia",
+          "rating": 838,
+          "faceImageId": "10053"
+        },
+        {
+          "rank": 4,
+          "id": "56964",
+          "name": "Pat CUMMINS",
+          "country": "Australia",
+          "rating": 832,
+          "faceImageId": "56964"
+        },
+        {
+          "rank": 5,
+          "id": "69409",
+          "name": "Marco JANSEN",
+          "country": "South Africa",
+          "rating": 825,
+          "faceImageId": "69409"
+        }
+      ],
+      "odi": [
+        {
+          "rank": 1,
+          "id": "vex39s",
+          "name": "Rashid KHAN",
+          "country": "Unknown",
+          "rating": 682,
+          "faceImageId": "vex39s"
+        },
+        {
+          "rank": 2,
+          "id": "mzgwfk",
+          "name": "Abrar AHMED",
+          "country": "Pakistan",
+          "rating": 675,
+          "faceImageId": "mzgwfk"
+        },
+        {
+          "rank": 3,
+          "id": "9lav6",
+          "name": "Jofra ARCHER",
+          "country": "England",
+          "rating": 649,
+          "faceImageId": "9lav6"
+        },
+        {
+          "rank": 4,
+          "id": "l9fk3j",
+          "name": "Mitchell SANTNER",
+          "country": "New Zealand",
+          "rating": 645,
+          "faceImageId": "l9fk3j"
+        },
+        {
+          "rank": 1,
+          "id": "0cyn9",
+          "name": "Keshav MAHARAJ",
+          "country": "South Africa",
+          "rating": 645,
+          "faceImageId": "0cyn9"
+        }
+      ],
+      "t20": [
+        {
+          "rank": 1,
+          "id": "zslyz",
+          "name": "Rashid KHAN",
+          "country": "Unknown",
+          "rating": 753,
+          "faceImageId": "zslyz"
+        },
+        {
+          "rank": 2,
+          "id": "vun1h4",
+          "name": "Abrar AHMED",
+          "country": "Pakistan",
+          "rating": 736,
+          "faceImageId": "vun1h4"
+        },
+        {
+          "rank": 3,
+          "id": "148bgp",
+          "name": "Adil RASHID",
+          "country": "England",
+          "rating": 710,
+          "faceImageId": "148bgp"
+        },
+        {
+          "rank": 4,
+          "id": "ap0iw4",
+          "name": "Adam ZAMPA",
+          "country": "Australia",
+          "rating": 700,
+          "faceImageId": "ap0iw4"
+        },
+        {
+          "rank": 5,
+          "id": "im2u8ua",
+          "name": "Varun CHAKARAVARTHY",
+          "country": "India",
+          "rating": 683,
+          "faceImageId": "im2u8ua"
+        }
+      ]
+    },
+    "allrounders": {
+      "test": [
+        {
+          "rank": 1,
+          "id": "3850",
+          "name": "Ravindra JADEJA",
+          "country": "India",
+          "rating": 446,
+          "faceImageId": "3850"
+        },
+        {
+          "rank": 2,
+          "id": "69409",
+          "name": "Marco JANSEN",
+          "country": "South Africa",
+          "rating": 344,
+          "faceImageId": "69409"
+        },
+        {
+          "rank": 3,
+          "id": "10053",
+          "name": "Mitchell STARC",
+          "country": "Australia",
+          "rating": 284,
+          "faceImageId": "10053"
+        },
+        {
+          "rank": 1,
+          "id": "63875",
+          "name": "Mehidy HASAN MIRAZ",
+          "country": "Bangladesh",
+          "rating": 284,
+          "faceImageId": "63875"
+        },
+        {
+          "rank": 5,
+          "id": "56964",
+          "name": "Pat CUMMINS",
+          "country": "Australia",
+          "rating": 250,
+          "faceImageId": "56964"
+        }
+      ],
+      "odi": [
+        {
+          "rank": 1,
+          "id": "6elu48",
+          "name": "Azmatullah OMARZAI",
+          "country": "Unknown",
+          "rating": 316,
+          "faceImageId": "6elu48"
+        },
+        {
+          "rank": 2,
+          "id": "zukx1",
+          "name": "Mehidy HASAN MIRAZ",
+          "country": "Bangladesh",
+          "rating": 260,
+          "faceImageId": "zukx1"
+        },
+        {
+          "rank": 3,
+          "id": "oyspif",
+          "name": "Michael BRACEWELL",
+          "country": "New Zealand",
+          "rating": 259,
+          "faceImageId": "oyspif"
+        },
+        {
+          "rank": 4,
+          "id": "4hn9w7",
+          "name": "Mohammad NABI",
+          "country": "Unknown",
+          "rating": 258,
+          "faceImageId": "4hn9w7"
+        },
+        {
+          "rank": 1,
+          "id": "pg9il8",
+          "name": "Sikandar RAZA",
+          "country": "Afghanistan",
+          "rating": 258,
+          "faceImageId": "pg9il8"
+        }
+      ],
+      "t20": [
+        {
+          "rank": 1,
+          "id": "o39o5n",
+          "name": "Sikandar RAZA",
+          "country": "Afghanistan",
+          "rating": 334,
+          "faceImageId": "o39o5n"
+        },
+        {
+          "rank": 2,
+          "id": "uj2qpd",
+          "name": "Saim AYUB",
+          "country": "Pakistan",
+          "rating": 275,
+          "faceImageId": "uj2qpd"
+        },
+        {
+          "rank": 3,
+          "id": "tb37yr",
+          "name": "Hardik PANDYA",
+          "country": "India",
+          "rating": 259,
+          "faceImageId": "tb37yr"
+        },
+        {
+          "rank": 4,
+          "id": "upcx1",
+          "name": "Dipendra SINGH AIREE",
+          "country": "Unknown",
+          "rating": 256,
+          "faceImageId": "upcx1"
+        },
+        {
+          "rank": 5,
+          "id": "xn27ko",
+          "name": "Roston CHASE",
+          "country": "West Indies",
+          "rating": 249,
+          "faceImageId": "xn27ko"
+        }
+      ]
+    }
+  }
+}

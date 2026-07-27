@@ -80,7 +80,7 @@ export default function ScorecardDetails() {
                         throw new Error("Match not found locally or remotely.");
                     }
 
-                    if (localData.json) {
+                    if (localData.json && (localData.json.info || localData.json.matchInfo)) {
                         const json = localData.json;
 
                         // CASE 1: Historical Archive Format (from import)
@@ -198,8 +198,26 @@ export default function ScorecardDetails() {
                             source: 'local-flat'
                         };
                         setMatchInfo(adaptedInfo);
-                        // Squads and detailed scorecard not available in flat cache
-                        setScoreCard([]);
+                        
+                        // Reconstruct synthetic scorecard for live score display
+                        const sc = [];
+                        if (localData.team1?.score && localData.team1.score !== "Yet to bat") {
+                            sc.push({
+                                batteamname: localData.team1.name || "Team 1",
+                                score: localData.team1.score,
+                                wickets: '',
+                                overs: ''
+                            });
+                        }
+                        if (localData.team2?.score && localData.team2.score !== "Yet to bat") {
+                            sc.push({
+                                batteamname: localData.team2.name || "Team 2",
+                                score: localData.team2.score,
+                                wickets: '',
+                                overs: ''
+                            });
+                        }
+                        setScoreCard(sc);
                         setTeams({ team1: null, team2: null });
                     }
                 }
@@ -452,7 +470,11 @@ const LiveInningTable = ({ inning, playerMap }) => {
             <div className="scorecard-table-container">
                 <div className="inning-header">
                     <h4>{batTeam}</h4>
-                    <span>{runs}/{wickets} ({overs} ov)</span>
+                    <span>
+                        {runs}
+                        {wickets && wickets !== '0' && wickets !== 0 && `/${wickets}`}
+                        {overs && overs !== '0' && overs !== 0 && ` (${overs} ov)`}
+                    </span>
                 </div>
                 <table className="scorecard-table">
                     <thead>
@@ -589,7 +611,11 @@ const LiveInningTable = ({ inning, playerMap }) => {
         <div className="scorecard-table-container">
             <div className="inning-header">
                 <h4>{batTeam}</h4>
-                <span>{runs}/{wickets} ({overs} ov)</span>
+                <span>
+                    {runs}
+                    {wickets && wickets !== '0' && wickets !== 0 && `/${wickets}`}
+                    {overs && overs !== '0' && overs !== 0 && ` (${overs} ov)`}
+                </span>
             </div>
             <table className="scorecard-table">
                 <tbody>

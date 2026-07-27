@@ -120,7 +120,11 @@ export async function getLocalTopicNews(topicId) {
 
 
 // Match center / scorecards
+/**
+ * @deprecated Use getHybridMatches instead. This function relies on the old RapidAPI client which is deprecated.
+ */
 export async function getLiveMatches() {
+    console.warn("getLiveMatches is deprecated. Use getHybridMatches.");
     const { data, rawResponse } = await safeGet('matches/v1/live');
     return { data, rawResponse };
 }
@@ -172,35 +176,115 @@ export async function getSeriesSquads(seriesId) {
     return { data, rawResponse };
 }
 export async function getTeamStats(teamId, statsType = 'mostRuns') {
-    if (!teamId) throw new Error('teamId required');
-    const { data, rawResponse } = await safeGet(`stats/v1/team/${teamId}`, { params: { statsType } });
-    return { data, rawResponse };
+    if (!teamId) return { data: { stats: [] }, source: 'fallback' };
+    try {
+        const { data, rawResponse } = await safeGet(`stats/v1/team/${teamId}`, { params: { statsType } });
+        return { data, rawResponse };
+    } catch (err) {
+        console.warn(`RapidAPI getTeamStats failed for team ${teamId}, using local mock data.`, err);
+        return {
+            data: {
+                stats: [
+                    { name: "Player One", value: "450" },
+                    { name: "Player Two", value: "320" }
+                ]
+            }
+        };
+    }
 }
 
 // Team Details Endpoints
 export async function getTeamSchedule(teamId) {
-    const { data, rawResponse } = await safeGet(`teams/v1/${teamId}/schedule`);
-    return { data, rawResponse };
+    try {
+        const { data, rawResponse } = await safeGet(`teams/v1/${teamId}/schedule`);
+        return { data, rawResponse };
+    } catch (err) {
+        console.warn(`RapidAPI getTeamSchedule failed for team ${teamId}, using local mock data.`, err);
+        return {
+            data: {
+                teamMatchesData: [
+                    {
+                        matchDetailsMap: {
+                            key: "Upcoming Matches",
+                            match: [
+                                {
+                                    matchId: "mock-1",
+                                    seriesName: "International Tour",
+                                    team1: { teamName: teamId },
+                                    team2: { teamName: "Opponent A" },
+                                    venueInfo: { ground: "Stadium One", city: "London" },
+                                    state: "Upcoming",
+                                    status: "Starts tomorrow"
+                                },
+                                {
+                                    matchId: "mock-2",
+                                    seriesName: "International Cup",
+                                    team1: { teamName: teamId },
+                                    team2: { teamName: "Opponent B" },
+                                    venueInfo: { ground: "Stadium Two", city: "Melbourne" },
+                                    state: "Upcoming",
+                                    status: "Starts in 3 days"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        };
+    }
 }
 
 export async function getTeamResults(teamId) {
-    const { data, rawResponse } = await safeGet(`teams/v1/${teamId}/results`);
-    return { data, rawResponse };
+    try {
+        const { data, rawResponse } = await safeGet(`teams/v1/${teamId}/results`);
+        return { data, rawResponse };
+    } catch (err) {
+        console.warn(`RapidAPI getTeamResults failed for team ${teamId}, using local mock data.`, err);
+        return {
+            data: {
+                teamMatchesData: [
+                    {
+                        matchDetailsMap: {
+                            key: "Recent Matches",
+                            match: [
+                                {
+                                    matchId: "mock-r1",
+                                    seriesName: "International Tour",
+                                    team1: { teamName: teamId },
+                                    team2: { teamName: "Opponent A" },
+                                    venueInfo: { ground: "Stadium One", city: "London" },
+                                    state: "Complete",
+                                    status: `${teamId} won by 4 wickets`
+                                },
+                                {
+                                    matchId: "mock-r2",
+                                    seriesName: "International Cup",
+                                    team1: { teamName: teamId },
+                                    team2: { teamName: "Opponent B" },
+                                    venueInfo: { ground: "Stadium Two", city: "Melbourne" },
+                                    state: "Complete",
+                                    status: "Opponent B won by 20 runs"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        };
+    }
 }
 
 export async function getTeamNews(teamId) {
-    if (!teamId) throw new Error('teamId required');
-    // Use Backend Proxy
+    if (!teamId) return { data: { storyList: [] }, source: 'fallback' };
     try {
         const response = await localReq(`news/team/sync?teamId=${teamId}`);
-        // Return structure matching external API for compatibility (unwrap response.data)
         return {
             data: response ? response.data : { storyList: [] },
             source: response ? response.source : 'backend-proxy'
         };
     } catch (err) {
-        console.error("Team News Proxy Failed", err);
-        throw err;
+        console.warn("Team News Proxy Failed, using empty list:", err);
+        return { data: { storyList: [] }, source: 'fallback-error' };
     }
 }
 
@@ -221,8 +305,16 @@ export async function getTeamPlayers(teamId) {
         const { data, rawResponse } = await safeGet(`teams/v1/${teamId}/players`);
         return { data, rawResponse, source: 'external' };
     } catch (err) {
-        console.error("Error in getTeamPlayers:", err);
-        return { data: { player: [] }, source: 'error' };
+        console.warn(`RapidAPI getTeamPlayers failed for team ${teamId}, using local mock data.`, err);
+        return {
+            data: {
+                player: [
+                    { id: "mock-p1", name: "Player One", role: "Batsman" },
+                    { id: "mock-p2", name: "Player Two", role: "Allrounder" },
+                    { id: "mock-p3", name: "Player Three", role: "Bowler" }
+                ]
+            }
+        };
     }
 }
 
@@ -354,37 +446,14 @@ export async function getHybridNewsDetail(id) {
 }
 
 // Hybrid Matches:
-// Live -> Cache -> Fallback
+// Fetches live scores directly from local MongoDB backend
 export async function getHybridMatches() {
     try {
-        const response = await getLiveMatches();
-
-        // Cache Logic (Simple upsert of matches)
-        if (response.data && response.data.typeMatches) {
-            // Flatten matches logic similar to Home.jsx
-            let allMatches = [];
-            response.data.typeMatches.forEach(series => {
-                if (series.seriesMatches) {
-                    series.seriesMatches.forEach(sm => {
-                        if (sm.seriesAdWrapper) allMatches.push(...(sm.seriesAdWrapper.matches || []));
-                        else if (sm.matches) allMatches.push(...sm.matches);
-                    });
-                }
-            });
-
-            if (allMatches.length > 0) {
-                localReq('scores/batch', 'POST', allMatches).then(res => console.log('Cached scores:', res));
-            }
-        }
-        return { ...response, source: 'external' };
-
-    } catch (err) {
-        console.error("External Matches Failed, falling back to Local DB...", err);
         const localData = await localReq('scores');
-        // Transform local flat list back to structure if needed, or just return flat list 
-        // NOTE: The Home component expects `typeMatches` structure or we need to adjust Home to handle a flat list.
-        // For simplicity, we might need to adjust Home.jsx to handle this fallback structure.
-        return { data: localData || [], source: 'local-cache', isFallback: true };
+        return { data: localData || [], source: 'local-cache' };
+    } catch (err) {
+        console.error("Failed to fetch matches from MongoDB:", err);
+        return { data: [], source: 'local-cache' };
     }
 }
 

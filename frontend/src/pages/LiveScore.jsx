@@ -192,8 +192,8 @@ export default function LiveScore() {
 
                     const t1Name = t1Data.teamSName || t1Data.shortName || t1Data.teamName || t1Data.name || 'Team 1';
                     const t2Name = t2Data.teamSName || t2Data.shortName || t2Data.teamName || t2Data.name || 'Team 2';
-                    const t1Score = match.team1?.runs ? `${match.team1.runs}/${match.team1.wickets}` : '';
-                    const t2Score = match.team2?.runs ? `${match.team2.runs}/${match.team2.wickets}` : '';
+                    const t1Score = match.team1?.runs ? `${match.team1.runs}/${match.team1.wickets}` : (match.team1?.score || '');
+                    const t2Score = match.team2?.runs ? `${match.team2.runs}/${match.team2.wickets}` : (match.team2?.score || '');
 
                     // Fallback local and external flags for standard teams
                     const TEAM_LOGOS = {
