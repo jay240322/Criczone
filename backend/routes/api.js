@@ -68,8 +68,9 @@ router.get('/news/sync', async (req, res) => {
         }
         res.json({ data, source: 'backend-proxy' });
     } catch (err) {
-        console.error("[Sync] Error:", err.message);
-        res.status(500).json({ message: err.message });
+        console.warn("[Sync] News API request failed (RapidAPI key may be missing). Serving local cache.");
+        const cached = await News.find({}).sort({ pubTime: -1 }).limit(20);
+        res.json({ data: { storyList: cached.map(s => ({ story: s })) }, source: 'fallback-error' });
     }
 });
 
@@ -117,8 +118,18 @@ router.get('/news/detail/sync', async (req, res) => {
 
         res.json({ data, source: 'backend-proxy' });
     } catch (err) {
-        console.error("[Sync] Error fetching detailed news:", err.message);
-        res.status(500).json({ message: err.message });
+        console.warn(`[Sync] News detail API request failed for ID ${id} (RapidAPI key may be missing). Serving local cache if available.`);
+        const cached = await News.findOne({
+            $or: [
+                { _id: mongoose.isValidObjectId(id) ? id : null },
+                { 'id': id }
+            ]
+        });
+        if (cached) {
+            res.json({ data: cached, source: 'fallback-error' });
+        } else {
+            res.status(500).json({ message: err.message });
+        }
     }
 });
 
@@ -164,8 +175,15 @@ router.get('/news/team/sync', async (req, res) => {
         }
         res.json({ data, source: 'backend-proxy' });
     } catch (err) {
-        console.error("[Sync] Error fetching team news:", err.message);
-        res.status(500).json({ message: err.message });
+        console.warn(`[Sync] Team news API request failed for team ${teamId} (RapidAPI key may be missing). Serving local cache.`);
+        const cached = await News.find({
+            $or: [
+                { headline: { $regex: teamId, $options: 'i' } },
+                { hline: { $regex: teamId, $options: 'i' } },
+                { intro: { $regex: teamId, $options: 'i' } }
+            ]
+        }).sort({ pubTime: -1 }).limit(10);
+        res.json({ data: { storyList: cached.map(s => ({ story: s })) }, source: 'fallback-error' });
     }
 });
 
@@ -230,8 +248,9 @@ router.get('/topic-news/sync', async (req, res) => {
 
         res.json({ data, source: 'backend-proxy' });
     } catch (err) {
-        console.error("[Sync] Error fetching topic news:", err.message);
-        res.status(500).json({ message: err.message });
+        console.warn(`[Sync] Topic news API request failed for topic ${topicId} (RapidAPI key may be missing). Serving local cache.`);
+        const cached = await TopicNews.find({ topicId }).sort({ createdAt: -1 }).limit(20);
+        res.json({ data: { storyList: cached.map(s => ({ story: s })) }, source: 'fallback-error' });
     }
 });
 
@@ -358,7 +377,7 @@ router.get('/schedule/sync', async (req, res) => {
         // Return structured data for UI
         res.json({ data, source: 'backend-proxy' });
     } catch (err) {
-        console.error("[Sync] Error fetching schedule, using fallback:", err.message);
+        console.warn("[Sync] Schedule API request failed (RapidAPI key may be missing). Serving local fallback.");
         res.json({ data: getFallbackSchedule(), source: 'fallback-error' });
     }
 });
@@ -890,8 +909,13 @@ router.get('/players/sync', async (req, res) => {
 
         res.json({ data, source: 'backend-proxy' });
     } catch (err) {
-        console.error("[Sync] Error fetching player data:", err.message);
-        res.status(500).json({ message: err.message });
+        console.warn(`[Sync] Player details API request failed for ID ${id} (RapidAPI key may be missing). Serving local cache if available.`);
+        const cached = await Player.findOne({ id: id.toString() });
+        if (cached) {
+            res.json({ data: cached, source: 'fallback-error' });
+        } else {
+            res.status(500).json({ message: err.message });
+        }
     }
 });
 
@@ -900,31 +924,106 @@ router.get('/players/sync', async (req, res) => {
 // ==========================================
 
 router.get('/rankings/sync', async (req, res) => {
+    const { category, formatType } = req.query;
+    if (!category || !formatType) return res.status(400).json({ message: "category and formatType are required" });
+
     try {
-        const { category, formatType } = req.query;
-        if (!category || !formatType) return res.status(400).json({ message: "category and formatType are required" });
-
-        console.log(`[Sync] Fetching ${formatType} rankings for ${category}`);
-        const url = `https://${process.env.RAPIDAPI_HOST}/stats/v1/rankings/${category}?formatType=${formatType}`;
-        const response = await fetch(url, {
-            headers: {
-                'x-rapidapi-key': getApiKey(req),
-                'x-rapidapi-host': process.env.RAPIDAPI_HOST
-            }
-        });
-
-        if (!response.ok) {
-            console.error(`[Sync] External API failed for rankings: ${response.status}.`);
-            return res.status(response.status).json({ message: "External API unavailable" });
+        console.log(`[Sync] Fetching ${formatType} rankings for ${category} from cache/scraper`);
+        const { getRankingsCache } = require("../scraper/rankingsScraper");
+        const cached = getRankingsCache(category, formatType);
+        
+        if (cached && cached.length > 0) {
+            return res.json({ data: { rank: cached }, source: 'scraper-cache' });
         }
 
-        const data = await response.json();
-        res.json({ data, source: 'backend-proxy' });
+        console.log(`[Sync] Cache not ready for ${category}/${formatType}. Returning mock fallback...`);
+        const fallback = getFallbackRankings(category, formatType);
+        res.json({ data: fallback, source: 'fallback-local' });
     } catch (err) {
-        console.error("[Sync] Error fetching rankings:", err.message);
-        res.status(500).json({ message: err.message });
+        console.error("[Sync] Error fetching rankings, using fallback:", err.message);
+        res.json({ data: getFallbackRankings(category, formatType), source: 'fallback-error' });
     }
 });
+
+function getFallbackRankings(category, formatType) {
+    const list = {
+        batsmen: {
+            test: [
+                { rank: 1, id: "1413", name: "Joe Root", country: "England", rating: 897 },
+                { rank: 2, id: "1450", name: "Kane Williamson", country: "New Zealand", rating: 859 },
+                { rank: 3, id: "2250", name: "Steve Smith", country: "Australia", rating: 818 },
+                { rank: 4, id: "1850", name: "Babar Azam", country: "Pakistan", rating: 797 },
+                { rank: 5, id: "1650", name: "Rohit Sharma", country: "India", rating: 751 },
+                { rank: 6, id: "1550", name: "Virat Kohli", country: "India", rating: 746 }
+            ],
+            odi: [
+                { rank: 1, id: "1850", name: "Babar Azam", country: "Pakistan", rating: 824 },
+                { rank: 2, id: "1550", name: "Virat Kohli", country: "India", rating: 775 },
+                { rank: 3, id: "1650", name: "Rohit Sharma", country: "India", rating: 752 },
+                { rank: 4, id: "2150", name: "Shubman Gill", country: "India", rating: 733 },
+                { rank: 5, id: "2350", name: "Travis Head", country: "Australia", rating: 728 }
+            ],
+            t20: [
+                { rank: 1, id: "2450", name: "Travis Head", country: "Australia", rating: 844 },
+                { rank: 2, id: "2550", name: "Suryakumar Yadav", country: "India", rating: 821 },
+                { rank: 3, id: "2650", name: "Phil Salt", country: "England", rating: 798 },
+                { rank: 4, id: "2750", name: "Yashasvi Jaiswal", country: "India", rating: 757 },
+                { rank: 5, id: "1850", name: "Babar Azam", country: "Pakistan", rating: 755 }
+            ]
+        },
+        bowlers: {
+            test: [
+                { rank: 1, id: "2850", name: "Jasprit Bumrah", country: "India", rating: 870 },
+                { rank: 2, id: "2950", name: "Ravichandran Ashwin", country: "India", rating: 859 },
+                { rank: 3, id: "3050", name: "Pat Cummins", country: "Australia", rating: 841 },
+                { rank: 4, id: "3150", name: "Kagiso Rabada", country: "South Africa", rating: 834 },
+                { rank: 5, id: "3250", name: "Josh Hazlewood", country: "Australia", rating: 826 }
+            ],
+            odi: [
+                { rank: 1, id: "3350", name: "Keshav Maharaj", country: "South Africa", rating: 716 },
+                { rank: 2, id: "3250", name: "Josh Hazlewood", country: "Australia", rating: 688 },
+                { rank: 3, id: "3450", name: "Adam Zampa", country: "Australia", rating: 686 },
+                { rank: 4, id: "2850", name: "Jasprit Bumrah", country: "India", rating: 685 },
+                { rank: 5, id: "3550", name: "Shaheen Afridi", country: "Pakistan", rating: 650 }
+            ],
+            t20: [
+                { rank: 1, id: "3650", name: "Adil Rashid", country: "England", rating: 726 },
+                { rank: 2, id: "3750", name: "Wanindu Hasaranga", country: "Sri Lanka", rating: 687 },
+                { rank: 3, id: "3850", name: "Akeal Hosein", country: "West Indies", rating: 664 },
+                { rank: 4, id: "3950", name: "Rashid Khan", country: "Afghanistan", rating: 660 },
+                { rank: 5, id: "2850", name: "Jasprit Bumrah", country: "India", rating: 654 }
+            ]
+        },
+        allrounders: {
+            test: [
+                { rank: 1, id: "4050", name: "Ravindra Jadeja", country: "India", rating: 468 },
+                { rank: 2, id: "2950", name: "Ravichandran Ashwin", country: "India", rating: 344 },
+                { rank: 3, id: "4150", name: "Shakib Al Hasan", country: "Bangladesh", rating: 310 },
+                { rank: 4, id: "4250", name: "Jason Holder", country: "West Indies", rating: 270 },
+                { rank: 5, id: "4350", name: "Axar Patel", country: "India", rating: 269 }
+            ],
+            odi: [
+                { rank: 1, id: "4450", name: "Mohammad Nabi", country: "Afghanistan", rating: 320 },
+                { rank: 2, id: "4150", name: "Shakib Al Hasan", country: "Bangladesh", rating: 292 },
+                { rank: 3, id: "4550", name: "Sikandar Raza", country: "Zimbabwe", rating: 288 },
+                { rank: 4, id: "3950", name: "Rashid Khan", country: "Afghanistan", rating: 255 },
+                { rank: 5, id: "4650", name: "Mitchell Santner", country: "New Zealand", rating: 247 }
+            ],
+            t20: [
+                { rank: 1, id: "4750", name: "Hardik Pandya", country: "India", rating: 228 },
+                { rank: 2, id: "3750", name: "Wanindu Hasaranga", country: "Sri Lanka", rating: 222 },
+                { rank: 3, id: "4850", name: "Marcus Stoinis", country: "Australia", rating: 211 },
+                { rank: 4, id: "4150", name: "Shakib Al Hasan", country: "Bangladesh", rating: 206 },
+                { rank: 5, id: "4550", name: "Sikandar Raza", country: "Zimbabwe", rating: 204 }
+            ]
+        }
+    };
+
+    const catData = list[category] || list.batsmen;
+    const formatData = catData[formatType] || catData.test;
+
+    return { rank: formatData };
+}
 
 // ==========================================
 //                 FAVORITES API
@@ -1006,15 +1105,15 @@ router.get('/teams/sync', async (req, res) => {
         });
 
         if (!response.ok) {
-            console.error(`[Sync] External API failed for teams: ${response.status}.`);
-            return res.status(response.status).json({ message: "External API Unavailable." });
+            console.error(`[Sync] External API failed for teams: ${response.status}. Returning empty fallback list.`);
+            return res.json({ data: { list: [] }, source: 'fallback-local' });
         }
 
         const data = await response.json();
         res.json({ data, source: 'backend-proxy' });
     } catch (err) {
-        console.error("[Sync] Error fetching teams:", err.message);
-        res.status(500).json({ message: err.message });
+        console.warn("[Sync] Teams API request failed (RapidAPI key may be missing). Serving local fallback.");
+        res.json({ data: { list: [] }, source: 'fallback-error' });
     }
 });
 

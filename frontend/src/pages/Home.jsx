@@ -154,10 +154,10 @@ export default function Home() {
 
                         const t1Score = match.matchScore?.team1Score?.inngs1
                             ? `${match.matchScore.team1Score.inngs1.runs}/${match.matchScore.team1Score.inngs1.wickets || 0}`
-                            : match.team1?.runs ? `${match.team1.runs}/${match.team1.wickets || 0}` : '';
+                            : match.team1?.runs ? `${match.team1.runs}/${match.team1.wickets || 0}` : (match.team1?.score || '');
                         const t2Score = match.matchScore?.team2Score?.inngs1
                             ? `${match.matchScore.team2Score.inngs1.runs}/${match.matchScore.team2Score.inngs1.wickets || 0}`
-                            : match.team2?.runs ? `${match.team2.runs}/${match.team2.wickets || 0}` : '';
+                            : match.team2?.runs ? `${match.team2.runs}/${match.team2.wickets || 0}` : (match.team2?.score || '');
 
 
                         return (
