@@ -17,7 +17,12 @@ export default function PlayerDetail() {
             try {
                 setLoading(true);
                 console.log(`Fetching stats for Player ID: ${id}`);
-                const { data } = await getPlayerStats(id);
+                
+                // Get the player's name from query parameters
+                const queryParams = new URLSearchParams(window.location.search);
+                const passedName = queryParams.get('name') || '';
+
+                const { data } = await getPlayerStats(id, passedName);
                 console.log("Player Data:", data);
                 setData(data);
             } catch (err) {

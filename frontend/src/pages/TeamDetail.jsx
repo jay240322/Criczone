@@ -181,7 +181,7 @@ export default function TeamDetail() {
                         {filteredPlayers.length === 0 ? <p>No players found.</p> : (
                             <div className="teams-grid">
                                 {filteredPlayers.map(p => (
-                                    <Link to={`/players/${p.id}`} key={p.id} className="team-card player-card">
+                                    <Link to={`/players/${p.id}?name=${encodeURIComponent(p.name)}`} key={p.id} className="team-card player-card">
                                         {p.imageId ? (
                                             <img src={getImageUrl(p.imageId)} alt={p.name} className="team-flag" />
                                         ) : <div className="team-flag placeholder" style={{ background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>N/A</div>}

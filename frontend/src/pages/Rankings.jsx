@@ -88,13 +88,15 @@ export default function Rankings() {
                                 <tr key={item.id} className="table-row">
                                     <td className={`rank-cell ${index < 3 ? 'top-rank' : ''}`}>#{item.rank}</td>
                                     <td className="player-cell">
-                                        <img
-                                            src={getImageUrl(item.faceImageId)}
-                                            alt={item.name}
-                                            className="player-img"
-                                            onError={(e) => e.target.style.background = '#444'}
-                                        />
-                                        <Link to={`/players/${item.id}`} className="player-name">{item.name}</Link>
+                                        <Link to={`/players/${item.id}?name=${encodeURIComponent(item.name)}`} style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', textDecoration: 'none' }}>
+                                            <img
+                                                src={getImageUrl(item.faceImageId)}
+                                                alt={item.name}
+                                                className="player-img"
+                                                onError={(e) => e.target.style.background = '#444'}
+                                            />
+                                            <span className="player-name">{item.name}</span>
+                                        </Link>
                                     </td>
                                     <td className="country-cell">{item.country}</td>
                                     <td><span className="rating-cell">{item.rating}</span></td>

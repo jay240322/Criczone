@@ -867,8 +867,10 @@ async function scrapeChannelVideos(channelId) {
 
 router.get('/players/sync', async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id, name: queryName } = req.query;
         if (!id) return res.status(400).json({ message: "Player ID is required" });
+
+        const { getMockPlayer } = require('../services/mockPlayer');
 
         console.log(`[Sync] Fetching player stats for ID: ${id}`);
         const url = `https://${process.env.RAPIDAPI_HOST}/stats/v1/player/${id}`;
@@ -883,7 +885,12 @@ router.get('/players/sync', async (req, res) => {
             console.error(`[Sync] External API failed for player id ${id}: ${response.status}. Returning local cache if exists.`);
             // Fallback to local
             const cached = await Player.findOne({ id: id.toString() });
-            if (!cached) return res.status(404).json({ message: "Player not found locally or remotely" });
+            if (!cached) {
+                console.log(`[Sync] Player ${id} not found locally or remotely. Returning generated fallback.`);
+                const mock = getMockPlayer(id, queryName);
+                await Player.findOneAndUpdate({ id: mock.id }, mock, { upsert: true });
+                return res.json({ data: mock, source: 'mock-fallback' });
+            }
             return res.json({ data: cached, source: 'local-fallback' });
         }
 
@@ -914,7 +921,11 @@ router.get('/players/sync', async (req, res) => {
         if (cached) {
             res.json({ data: cached, source: 'fallback-error' });
         } else {
-            res.status(500).json({ message: err.message });
+            console.log(`[Sync] Serving mock fallback for player ${id} due to connection error.`);
+            const { getMockPlayer } = require('../services/mockPlayer');
+            const mock = getMockPlayer(id, queryName);
+            await Player.findOneAndUpdate({ id: mock.id }, mock, { upsert: true });
+            res.json({ data: mock, source: 'mock-fallback' });
         }
     }
 });
@@ -933,7 +944,60 @@ router.get('/rankings/sync', async (req, res) => {
         const cached = getRankingsCache(category, formatType);
         
         if (cached && cached.length > 0) {
-            return res.json({ data: { rank: cached }, source: 'scraper-cache' });
+            const Player = require('../models/Player');
+            const enhancedRankings = [];
+
+            for (const item of cached) {
+                const enhancedItem = { ...item };
+                try {
+                    // Try to find the player in the database by name
+                    let player = await Player.findOne({ name: new RegExp('^' + item.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') });
+                    if (!player) {
+                        player = await Player.findOne({ name: new RegExp(item.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') });
+                    }
+
+                    if (player) {
+                        // Map to real Cricbuzz ID and image ID
+                        enhancedItem.id = player.id;
+                        enhancedItem.faceImageId = player.imageId || player.faceImageId || player.id;
+                    } else {
+                        // Fetch from Cricbuzz Search and Cache it locally
+                        const searchUrl = `https://${process.env.RAPIDAPI_HOST}/stats/v1/player/search?plrN=${encodeURIComponent(item.name)}`;
+                        console.log(`[Rankings Sync] Searching Cricbuzz for unknown player: ${item.name}`);
+                        const searchResp = await fetch(searchUrl, {
+                            headers: {
+                                'x-rapidapi-key': getApiKey(req),
+                                'x-rapidapi-host': process.env.RAPIDAPI_HOST
+                            }
+                        });
+
+                        if (searchResp.ok) {
+                            const searchData = await searchResp.json();
+                            const foundPlayer = searchData && searchData.player && searchData.player[0];
+                            if (foundPlayer && foundPlayer.id) {
+                                const newPlayer = await Player.findOneAndUpdate(
+                                    { id: foundPlayer.id.toString() },
+                                    {
+                                        id: foundPlayer.id.toString(),
+                                        name: foundPlayer.name || item.name,
+                                        imageId: (foundPlayer.faceImageId || foundPlayer.imageId || foundPlayer.id).toString(),
+                                        intlTeam: foundPlayer.teamName || item.country,
+                                        lastUpdated: new Date()
+                                    },
+                                    { upsert: true, new: true }
+                                );
+                                enhancedItem.id = newPlayer.id;
+                                enhancedItem.faceImageId = newPlayer.imageId;
+                            }
+                        }
+                    }
+                } catch (searchErr) {
+                    console.error(`[Rankings Sync] Failed to resolve Cricbuzz ID for ${item.name}:`, searchErr.message);
+                }
+                enhancedRankings.push(enhancedItem);
+            }
+
+            return res.json({ data: { rank: enhancedRankings }, source: 'scraper-cache-enhanced' });
         }
 
         console.log(`[Sync] Cache not ready for ${category}/${formatType}. Returning mock fallback...`);

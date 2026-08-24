@@ -74,7 +74,9 @@ exports.getImage = async (req, res) => {
             return res.sendFile(downloadedPath);
         }
 
-        res.status(404).send('Image not found');
+        // Redirect to a placeholder image to avoid broken images in the UI
+        console.log(`[Image] Failed to download image ${id}. Redirecting to placeholder.`);
+        return res.redirect('https://placehold.co/150x150?text=Player');
 
     } catch (error) {
         console.error("Image Proxy Error:", error);

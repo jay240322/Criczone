@@ -348,11 +348,12 @@ export function getImageUrl(imageId) {
     return `${LOCAL_BASE}/images/${imageId}`;
 }
 
-export async function getPlayerStats(playerId) {
+export async function getPlayerStats(playerId, name = '') {
     try {
         console.log(`Fetching player ${playerId} via Backend Proxy...`);
         // Call our own backend, which now handles the external fetch + caching
-        const response = await localReq(`players/sync?id=${playerId}`);
+        const query = name ? `&name=${encodeURIComponent(name)}` : '';
+        const response = await localReq(`players/sync?id=${playerId}${query}`);
 
         if (!response || !response.data) {
             throw new Error(response?.message || "Player not found locally and External API limit may be exceeded. Please try again later.");

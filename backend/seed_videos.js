@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Video = require('./models/Video');
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 
 const sampleVideos = [
     {

@@ -70,7 +70,7 @@ module.exports = syncScores;
 // Allow manual execution
 if (require.main === module) {
 
-    require("dotenv").config();
+    require("dotenv").config({ path: require("path").join(__dirname, "../.env") });
 
     const mongoose = require("mongoose");
 

@@ -302,7 +302,7 @@ export default function Teams() {
                         <div className="teams-grid">
                             {players.length > 0 ? (
                                 players.map(p => (
-                                    <Link to={`/players/${p.id}`} key={p.id} className="team-card player-card">
+                                    <Link to={`/players/${p.id}?name=${encodeURIComponent(p.name)}`} key={p.id} className="team-card player-card">
                                         {p.imageId ? (
                                             <img src={getImageUrl(p.imageId)} alt={p.name} className="team-flag" />
                                         ) : (

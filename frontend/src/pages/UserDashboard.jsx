@@ -145,7 +145,7 @@ export default function UserDashboard() {
                     <div className="favorites-grid">
                         {activeTab === 'players' && favorites.players.length === 0 && <p className="no-favs">No favorite players yet.</p>}
                         {activeTab === 'players' && favorites.players.map(fav => (
-                            <div key={fav._id} className="fav-card" onClick={() => navigate(`/players/${fav.itemId}`)}>
+                            <div key={fav._id} className="fav-card" onClick={() => navigate(`/players/${fav.itemId}?name=${encodeURIComponent(fav.title)}`)}>
                                 <img src={fav.imageUrl ? getImageUrl(fav.imageUrl) : 'https://via.placeholder.com/80'} alt={fav.title} />
                                 <div>
                                     <h4>{fav.title || 'Player'}</h4>

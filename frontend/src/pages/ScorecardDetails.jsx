@@ -489,7 +489,7 @@ const LiveInningTable = ({ inning, playerMap }) => {
                                 <tr key={i}>
                                     <td>
                                         {pId ? (
-                                            <Link to={`/players/${pId}`} className="batter-name-link">
+                                            <Link to={`/players/${pId}?name=${encodeURIComponent(b.name)}`} className="batter-name-link">
                                                 <span className="batter-name">{b.name}</span>
                                             </Link>
                                         ) : (
@@ -522,7 +522,7 @@ const LiveInningTable = ({ inning, playerMap }) => {
                                 <tr key={i}>
                                     <td>
                                         {pId ? (
-                                            <Link to={`/players/${pId}`} className="bowler-name-link">
+                                            <Link to={`/players/${pId}?name=${encodeURIComponent(b.name)}`} className="bowler-name-link">
                                                 {b.name}
                                             </Link>
                                         ) : b.name}
@@ -559,7 +559,7 @@ const LiveInningTable = ({ inning, playerMap }) => {
                                 <tr key={i}>
                                     <td>
                                         {pId ? (
-                                            <Link to={`/players/${pId}`} className="batter-name-link">
+                                            <Link to={`/players/${pId}?name=${encodeURIComponent(b.name)}`} className="batter-name-link">
                                                 <span className="batter-name">{b.name}</span>
                                             </Link>
                                         ) : (
@@ -591,7 +591,7 @@ const LiveInningTable = ({ inning, playerMap }) => {
                                 <tr key={i}>
                                     <td>
                                         {pId ? (
-                                            <Link to={`/players/${pId}`} className="bowler-name-link">
+                                            <Link to={`/players/${pId}?name=${encodeURIComponent(b.name)}`} className="bowler-name-link">
                                                 {b.name}
                                             </Link>
                                         ) : b.name}

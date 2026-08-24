@@ -62,8 +62,6 @@ exports.getPlayer = async (req, res) => {
 
             if (externalData) {
                 // Save to DB
-                // Need to ensure we extract the right fields to save structure consistent
-                // externalData might be the full response object
                 player = await Player.findOneAndUpdate(
                     { id },
                     {
@@ -72,6 +70,15 @@ exports.getPlayer = async (req, res) => {
                         name: externalData.name || (externalData.appIndex?.seoTitle?.split(' Profile')[0]) || "Unknown",
                         lastUpdated: Date.now()
                     },
+                    { upsert: true, new: true }
+                );
+            } else {
+                console.log(`[Backend] External API failed for player ${id}. Serving mock fallback.`);
+                const { getMockPlayer } = require('../services/mockPlayer');
+                const mock = getMockPlayer(id);
+                player = await Player.findOneAndUpdate(
+                    { id },
+                    { id, ...mock, lastUpdated: Date.now() },
                     { upsert: true, new: true }
                 );
             }
